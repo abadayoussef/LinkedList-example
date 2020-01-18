@@ -45,7 +45,7 @@ class LinkedList {
 
     listAsc() {
         if (this.getSize() === 0)
-            return;
+            return "";
 
         let rows = "";
         let currentNode = this.first;
@@ -59,7 +59,7 @@ class LinkedList {
     }
     listDesc() {
         if (this.getSize() === 0)
-            return;
+            return "";
 
         let rows = "";
         let currentNode = this.last;
@@ -209,12 +209,12 @@ function addAsLast() {
 }
 
 function showAllAsc() {
-    document.getElementById("table").innerHTML = " <tr><th>Index</th><th>Data</th></tr>";
+    document.getElementById("table").innerHTML = "<tr><th>Index</th><th>Data</th></tr>";
     document.getElementById("table").innerHTML += list.listAsc();
 }
 
 function showAllDesc() {
-    document.getElementById("table").innerHTML = " <tr><th>Index</th><th>Data</th></tr>";
+    document.getElementById("table").innerHTML = "<tr><th>Index</th><th>Data</th></tr>";
     document.getElementById("table").innerHTML += list.listDesc();
 }
 
