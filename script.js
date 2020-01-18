@@ -89,6 +89,7 @@ class LinkedList {
 
     clear() {
         this.first = this.last = null;
+        this.index = -1;
     }
 
     deleteFirst() {
