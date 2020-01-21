@@ -1,52 +1,37 @@
 class LinkedList {
     constructor() {
-        this.index = -1;
-        this.first = null;
-        this.last = null;
+        this.length = -1;
+        this.first = this.last = null;
     }
 
     addToFirst(data) {
         if (!this.first) {
             this.first = this.last = new Node(data);
-            this.first.index = this.last.index = 0;
-            this.index++;
+            this.length = this.first.index = this.last.index = 0;
             return;
         }
         let oldFirst = this.first;
-        this.first = new Node(data);
-        this.first.next = oldFirst;
-        oldFirst.prev = this.first;
-        this.index++;
+        oldFirst.prev = this.first = new Node(data,oldFirst,null,0);
+        ++this.length;
 
-        this.first.index = 0;
-        let currentNode = this.first;
+        let currentNode = this.first.next;
         while (currentNode) {
+            ++currentNode.index;
             currentNode = currentNode.next;
-            if (currentNode) currentNode.index += 1;
         }
-
-
 
     }
     addToLast(data) {
         if (!this.last) {
-            this.last = this.first = new Node(data);
-            this.index++;
-            this.first.index = this.last.index = this.index;
+            this.first = this.last = new Node(data);
+            this.length = this.first.index = this.last.index = 0;
             return;
         }
         let oldLast = this.last;
-        this.last = new Node(data);
-        this.last.prev = oldLast;
-        oldLast.next = this.last;
-        this.index++;
-        this.last.index = this.index;
+        oldLast.next = this.last = new Node(data,null,oldLast,++this.length);
     }
 
     listAsc() {
-        if (this.getSize() === 0)
-            return "";
-
         let rows = "";
         let currentNode = this.first;
         while (currentNode) {
@@ -58,9 +43,6 @@ class LinkedList {
         return rows;
     }
     listDesc() {
-        if (this.getSize() === 0)
-            return "";
-
         let rows = "";
         let currentNode = this.last;
         while (currentNode) {
@@ -73,7 +55,7 @@ class LinkedList {
     }
 
     searchByIndex(index) {
-        if (this.index === -1 || index > this.index) return;
+        if (this.length === -1 || index > this.length) return;
         let currentNode = this.first;
         let rows = "";
         while (currentNode) {
@@ -89,22 +71,13 @@ class LinkedList {
 
     clear() {
         this.first = this.last = null;
-        this.index = -1;
+        this.length = -1;
     }
 
     deleteFirst() {
-        if (!this.first) {
-            return;
-        }
-        if (this.first === this.last) {
-            this.first = this.last = null;
-            return;
-        }
-        let removedFirst = this.first;
-        this.first = removedFirst.next;
+        this.first = this.first.next;
         this.first.prev = null;
-        this.index--;
-
+        this.length--;
         this.first.index = 0;
         let currentNode = this.first;
         while (currentNode) {
@@ -114,18 +87,9 @@ class LinkedList {
     }
 
     deleteLast() {
-        if (!this.last) {
-            return;
-        }
-        if (this.first === this.last) {
-            this.first = this.last = null;
-            return;
-        }
-        let removedLast = this.last;
-        this.last = removedLast.prev;
+        this.last = this.last.prev;
         this.last.next = null;
-        this.index--;
-        this.last.index = this.index;
+        this.length--;
     }
 
     addByIndex(data, index) {
@@ -140,7 +104,7 @@ class LinkedList {
             let currentNode = this.first;
             while (currentNode) {
                 if (index === currentNode.index) {
-                    this.index++;
+                    this.length++;
                     let temp = currentNode;
                     temp.prev.next = temp.prev = currentNode = new Node(data, temp, temp.prev, index);
                     while (temp) {
@@ -166,7 +130,7 @@ class LinkedList {
             let currentNode = this.first;
             while (currentNode) {
                 if (index === currentNode.index) {
-                    this.index--;
+                    this.length--;
                     let temp = currentNode.next;
                     currentNode.prev.next = currentNode.next;
                     currentNode.next.prev = currentNode.prev;
@@ -183,7 +147,7 @@ class LinkedList {
 
 
     getSize() {
-        return this.index + 1;
+        return this.length + 1;
     }
 }
 
@@ -192,7 +156,7 @@ class Node {
         this.data = data;
         this.next = next || null;
         this.prev = prev || null;
-        this.index = index || null;
+        this.index = null || index;
     }
 }
 
